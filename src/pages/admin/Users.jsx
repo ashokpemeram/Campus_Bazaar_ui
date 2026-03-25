@@ -6,6 +6,13 @@ import { Search, UserMinus, ShieldCheck, Trash2 } from 'lucide-react';
 const Users = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [avatarErrors, setAvatarErrors] = useState({});
+
+    const getAvatarUrl = (avatar) => {
+        if (!avatar) return null;
+        if (avatar.startsWith('http://') || avatar.startsWith('https://')) return avatar;
+        return `${import.meta.env.VITE_SERVER_URL}/uploads/${avatar}`;
+    };
 
     const fetchUsers = async () => {
         try {
@@ -77,8 +84,17 @@ const Users = () => {
                             <tr key={user._id} style={{ borderBottom: '1px solid var(--border)' }}>
                                 <td style={{ padding: '15px 20px' }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                        <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem' }}>
-                                            {user.name.charAt(0)}
+                                        <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', overflow: 'hidden' }}>
+                                            {user.avatar && !avatarErrors[user._id] ? (
+                                                <img
+                                                    src={getAvatarUrl(user.avatar)}
+                                                    alt={user.name}
+                                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                    onError={() => setAvatarErrors((prev) => ({ ...prev, [user._id]: true }))}
+                                                />
+                                            ) : (
+                                                user.name.charAt(0)
+                                            )}
                                         </div>
                                         <div>
                                             <div style={{ fontWeight: '500' }}>{user.name}</div>
