@@ -55,6 +55,7 @@ const Register = () => {
         const errors = [];
         if (!formData.name || !formData.name.trim()) {
             errors.push('Name is required');
+            console.log(errors);
         } else if (!validateName(formData.name)) {
             errors.push('Name must contain only letters');
         }
@@ -202,7 +203,7 @@ const Register = () => {
                     </div>
                     <button 
                         type="submit" 
-                        disabled={loading || !isCollegeEmail || !validateName(formData.name) || !validatePassword(formData.password) || (isFallback && (!collegeConfirmed || !collegeName.trim()))}
+                        // disabled={loading || !isCollegeEmail || !validateName(formData.name) || !validatePassword(formData.password) || (isFallback && (!collegeConfirmed || !collegeName.trim()))}
                         style={{ width: '100%', padding: '14px', background: 'var(--primary)', color: 'white', fontSize: '1rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                     >
                         {loading ? <Loader2 className="animate-spin" /> : 'Create Account'}
