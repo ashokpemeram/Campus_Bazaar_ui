@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { 
-    LayoutDashboard, Package, ShoppingCart, DollarSign, 
+    LayoutDashboard, Package, ShoppingCart, IndianRupee, 
     Heart, MessageCircle, Settings, User as UserIcon, Menu, X 
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -26,7 +26,7 @@ const Dashboard = () => {
         { name: 'Active Listings', icon: LayoutDashboard, path: '/dashboard/active' },
         { name: 'My Orders', icon: ShoppingCart, path: '/dashboard/orders' },
         { name: 'Seller Orders', icon: Package, path: '/dashboard/seller-orders' },
-        { name: 'Sold Products', icon: DollarSign, path: '/dashboard/sold' },
+        { name: 'Sold Products', icon: IndianRupee, path: '/dashboard/sold' },
         { name: 'Wishlist', icon: Heart, path: '/dashboard/wishlist' },
         { name: 'Messages', icon: MessageCircle, path: '/dashboard/messages' },
         { name: 'Settings', icon: Settings, path: '/dashboard/settings' },

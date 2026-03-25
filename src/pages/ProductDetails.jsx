@@ -5,6 +5,7 @@ import { ArrowLeft, Heart, MessageCircle, ShoppingCart } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
+import { formatCurrency } from '../utils/currency';
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -158,7 +159,7 @@ const ProductDetails = () => {
                         <div>
                             <div style={{ color: 'var(--text-dim)', fontSize: '0.9rem', marginBottom: '6px' }}>{product.category}</div>
                             <h1 style={{ fontSize: '2rem', fontWeight: '800', marginBottom: '10px' }}>{product.title}</h1>
-                            <div style={{ fontSize: '1.8rem', color: 'var(--primary)', fontWeight: '800' }}>${product.price}</div>
+                            <div style={{ fontSize: '1.8rem', color: 'var(--primary)', fontWeight: '800' }}>{formatCurrency(product.price)}</div>
                         </div>
 
                         <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
@@ -217,7 +218,7 @@ const ProductDetails = () => {
                                     <h3 style={{ fontSize: '1rem', marginBottom: '6px' }}>{item.title}</h3>
                                 </Link>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <span style={{ fontWeight: '700', color: 'var(--primary)' }}>${item.price}</span>
+                                    <span style={{ fontWeight: '700', color: 'var(--primary)' }}>{formatCurrency(item.price)}</span>
                                     <button className="btn-primary" style={{ padding: '6px 10px', fontSize: '0.8rem' }} onClick={() => handleAddToCart(item)}>
                                         Add to Cart
                                     </button>

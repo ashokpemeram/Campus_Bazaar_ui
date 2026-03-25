@@ -7,6 +7,8 @@ import Skeleton from '../components/Skeleton';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
+import { CATEGORIES } from '../config/categories';
+import { formatCurrency } from '../utils/currency';
 
 const Products = () => {
     const { user } = useAuth();
@@ -25,7 +27,7 @@ const Products = () => {
     const [sameCollegeOnly, setSameCollegeOnly] = useState(false);
     const [showFilters, setShowFilters] = useState(false);
 
-    const categories = ['Electronics', 'Books', 'Furniture', 'Clothing', 'Others'];
+    const categories = CATEGORIES;
 
     const fetchProducts = async () => {
         setLoading(true);
@@ -369,7 +371,7 @@ const Products = () => {
                                                 <span style={{ fontSize: '0.8rem', color: 'var(--text-dim)' }}>{product.sellerId?.name}</span>
                                             </div>
                                             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                                                <span style={{ fontSize: '1.4rem', fontWeight: '800', color: 'var(--primary)' }}>${product.price}</span>
+                                                <span style={{ fontSize: '1.4rem', fontWeight: '800', color: 'var(--primary)' }}>{formatCurrency(product.price)}</span>
                                                 <div style={{ display: 'flex', gap: '10px' }}>
                                                     <button 
                                                         className="btn-primary" 

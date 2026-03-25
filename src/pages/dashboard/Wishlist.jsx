@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Trash2, ShoppingCart } from 'lucide-react';
 import Skeleton from '../../components/Skeleton';
 import { Link } from 'react-router-dom';
+import { formatCurrency } from '../../utils/currency';
 
 const Wishlist = () => {
     const [wishlist, setWishlist] = useState([]);
@@ -59,7 +60,7 @@ const Wishlist = () => {
                                 </button>
                             </div>
                             <h4 style={{ fontSize: '1rem', marginBottom: '5px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.productId?.title || 'Product Unavailable'}</h4>
-                            <div style={{ color: 'var(--primary)', fontWeight: 'bold', marginBottom: '10px' }}>${item.productId?.price}</div>
+                            <div style={{ color: 'var(--primary)', fontWeight: 'bold', marginBottom: '10px' }}>{formatCurrency(item.productId?.price)}</div>
                             <Link to={`/products/${item.productId?._id}`} className="btn-primary" style={{ width: '100%', textAlign: 'center', textDecoration: 'none', display: 'block', padding: '8px', fontSize: '0.8rem' }}>View Product</Link>
                         </div>
                     ))}

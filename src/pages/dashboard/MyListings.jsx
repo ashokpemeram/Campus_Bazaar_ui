@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Edit, Trash2, Eye, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Skeleton from '../../components/Skeleton';
+import { formatCurrency } from '../../utils/currency';
 
 const MyListings = () => {
     const [listings, setListings] = useState([]);
@@ -74,7 +75,7 @@ const MyListings = () => {
                                 <div>
                                     <h4 style={{ fontSize: '1.1rem', marginBottom: '4px' }}>{product.title}</h4>
                                     <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-                                        <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>${product.price}</span>
+                                        <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>{formatCurrency(product.price)}</span>
                                         <span style={{ 
                                             fontSize: '0.75rem', padding: '2px 8px', borderRadius: '4px', background: badge.bg,
                                             color: badge.text

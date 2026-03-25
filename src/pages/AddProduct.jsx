@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingBag, Upload, AlertCircle, Loader2 } from 'lucide-react';
 import Navbar from '../components/Navbar';
+import { CATEGORIES } from '../config/categories';
+import { formatCurrency } from '../utils/currency';
 
 const createSuggestRequestId = () => {
     if (typeof window !== 'undefined') {
@@ -158,11 +160,11 @@ const AddProduct = () => {
                                     required
                                 >
                                     <option value="">Select Category</option>
-                                    <option value="Electronics">Electronics</option>
-                                    <option value="Books">Books</option>
-                                    <option value="Clothing">Clothing</option>
-                                    <option value="Dorm Essentials">Dorm Essentials</option>
-                                    <option value="Tools">Tools</option>
+                                    {CATEGORIES.map((categoryOption) => (
+                                        <option key={categoryOption} value={categoryOption}>
+                                            {categoryOption}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
                             <div>
@@ -191,8 +193,8 @@ const AddProduct = () => {
                                 )}
                                 {suggestion && (
                                     <div style={{ marginTop: '12px', padding: '12px', border: '1px solid var(--border)', borderRadius: '10px', background: 'rgba(255,255,255,0.04)' }}>
-                                        <div style={{ fontWeight: '600', marginBottom: '6px' }}>Suggested Price: INR {suggestion.suggestedPrice}</div>
-                                        <div style={{ color: 'var(--text-dim)', fontSize: '0.9rem' }}>Range: INR {suggestion.minPrice} - INR {suggestion.maxPrice}</div>
+                                        <div style={{ fontWeight: '600', marginBottom: '6px' }}>Suggested Price: {formatCurrency(suggestion.suggestedPrice)}</div>
+                                        <div style={{ color: 'var(--text-dim)', fontSize: '0.9rem' }}>Range: {formatCurrency(suggestion.minPrice)} - {formatCurrency(suggestion.maxPrice)}</div>
                                         <div style={{ color: 'var(--text-dim)', fontSize: '0.9rem', marginTop: '6px' }}>{suggestion.reason}</div>
                                         <div style={{ color: 'var(--text-dim)', fontSize: '0.9rem', marginTop: '6px' }}>
                                             Confidence: {suggestion.confidence || 'Low'}
@@ -206,13 +208,13 @@ const AddProduct = () => {
                                             <div style={{ color: 'var(--text-dim)', fontSize: '0.9rem', marginTop: '8px' }}>
                                                 <div style={{ fontWeight: '600', marginBottom: '4px' }}>Based on</div>
                                                 {suggestion.breakdown.depreciatedPrice ? (
-                                                    <div>Condition adjusted price: INR {suggestion.breakdown.depreciatedPrice}</div>
+                                                    <div>Condition adjusted price: {formatCurrency(suggestion.breakdown.depreciatedPrice)}</div>
                                                 ) : null}
                                                 {suggestion.breakdown.avgMarketPrice ? (
-                                                    <div>Similar listings: INR {Math.round(suggestion.breakdown.avgMarketPrice)}</div>
+                                                    <div>Similar listings: {formatCurrency(Math.round(suggestion.breakdown.avgMarketPrice))}</div>
                                                 ) : null}
                                                 {suggestion.breakdown.originalPrice ? (
-                                                    <div>Original Price: INR {suggestion.breakdown.originalPrice}</div>
+                                                    <div>Original Price: {formatCurrency(suggestion.breakdown.originalPrice)}</div>
                                                 ) : null}
                                                 {suggestion.breakdown.aiUsed ? (
                                                     <div>AI estimate used due to limited data</div>

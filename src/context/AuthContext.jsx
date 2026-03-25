@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
 
     const verifyOtp = async (email, otp) => {
         const res = await axios.post('/api/auth/verify-otp', { email, otp });
-        return res.data;
+        return res;
     };
 
     const resendOtp = async (email) => {

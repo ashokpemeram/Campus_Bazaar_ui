@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import toast from 'react-hot-toast';
 import Skeleton from '../components/Skeleton';
+import { formatCurrency } from '../utils/currency';
 
 const Wishlist = () => {
     const [wishlist, setWishlist] = useState([]);
@@ -88,7 +89,7 @@ const Wishlist = () => {
                                 <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
                                         <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{product.title}</h3>
-                                        <span style={{ color: 'var(--primary)', fontWeight: 'bold', fontSize: '1.2rem' }}>${product.price}</span>
+                                        <span style={{ color: 'var(--primary)', fontWeight: 'bold', fontSize: '1.2rem' }}>{formatCurrency(product.price)}</span>
                                     </div>
                                     <p style={{ color: 'var(--text-dim)', fontSize: '0.9rem', marginBottom: '20px', display: '-webkit-box', WebkitLineClamp: '2', WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{product.description}</p>
                                     <button 

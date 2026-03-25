@@ -8,6 +8,7 @@ import AdminDashboard from './pages/admin/Dashboard';
 import AdminUsers from './pages/admin/Users';
 import AdminProducts from './pages/admin/Products';
 import AdminOrders from './pages/admin/Orders';
+import AdminProductDetails from './pages/admin/ProductDetails';
 import AddProduct from './pages/AddProduct';
 import Products from './pages/Products';
 import ProductDetails from './pages/ProductDetails';
@@ -50,6 +51,7 @@ function App() {
           <Route path="/admin" element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>} />
           <Route path="/admin/users" element={<ProtectedRoute adminOnly><AdminUsers /></ProtectedRoute>} />
           <Route path="/admin/products" element={<ProtectedRoute adminOnly><AdminProducts /></ProtectedRoute>} />
+          <Route path="/admin/product/:id" element={<ProtectedRoute adminOnly><AdminProductDetails /></ProtectedRoute>} />
           <Route path="/admin/orders" element={<ProtectedRoute adminOnly><AdminOrders /></ProtectedRoute>} />
         </Routes>
       </Router>

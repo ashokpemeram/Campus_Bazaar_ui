@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Check, X, User, Phone, MapPin, Package, Clock } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Skeleton from '../../components/Skeleton';
+import { formatCurrency } from '../../utils/currency';
 
 const SellerOrders = () => {
     const [orders, setOrders] = useState([]);
@@ -117,7 +118,7 @@ const SellerOrders = () => {
                                         {normalizedStatus.toUpperCase()}
                                     </div>
                                     <div style={{ marginTop: '10px', fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--primary)' }}>
-                                        Total: ${order.totalAmount}
+                                        Total: {formatCurrency(order.totalAmount)}
                                     </div>
                                 </div>
                             </div>
@@ -135,7 +136,7 @@ const SellerOrders = () => {
                                             </div>
                                             <div>
                                                 <div style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>{item.productId?.title || 'Product Deleted'}</div>
-                                                <div style={{ fontSize: '0.8rem', color: 'var(--text-dim)' }}>Qty: {item.quantity} × ${item.price}</div>
+                                                <div style={{ fontSize: '0.8rem', color: 'var(--text-dim)' }}>Qty: {item.quantity} x {formatCurrency(item.price)}</div>
                                             </div>
                                         </div>
                                     ))}

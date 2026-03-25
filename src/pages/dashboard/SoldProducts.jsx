@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Skeleton from '../../components/Skeleton';
-import { User, DollarSign, Calendar } from 'lucide-react';
+import { User, Calendar } from 'lucide-react';
+import { formatCurrency } from '../../utils/currency';
 
 const SoldProducts = () => {
     const [sales, setSales] = useState([]);
@@ -51,8 +52,8 @@ const SoldProducts = () => {
                                     </div>
                                 </div>
                                 <div style={{ textAlign: 'right' }}>
-                                    <div style={{ fontSize: '1.5rem', fontWeight: '800', color: '#22c55e', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                                        <DollarSign size={20} /> {sale.totalAmount}
+                                    <div style={{ fontSize: '1.5rem', fontWeight: '800', color: '#22c55e' }}>
+                                        {formatCurrency(sale.totalAmount)}
                                     </div>
                                     <div style={{ fontSize: '0.75rem', background: 'rgba(34, 197, 94, 0.1)', color: '#22c55e', padding: '4px 10px', borderRadius: '20px', marginTop: '8px' }}>Payment Received</div>
                                 </div>

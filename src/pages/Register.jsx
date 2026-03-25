@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { User, Mail, Lock, School, Loader2 } from 'lucide-react';
 import { allowedDomains } from '../config/collegeDomains';
 import { resolveCollegeName } from '../utils/collegeResolver';
+import { validateName, validatePassword } from '../utils/validation';
 
 const Register = () => {
     const [formData, setFormData] = useState({ name: '', email: '', password: '' });
@@ -12,7 +13,7 @@ const Register = () => {
     const [collegeConfirmed, setCollegeConfirmed] = useState(false);
     const [isEditingCollege, setIsEditingCollege] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
+    const [errorMessages, setErrorMessages] = useState([]);
     const { register } = useAuth();
     const navigate = useNavigate();
 
@@ -25,6 +26,12 @@ const Register = () => {
     const isCollegeEmail = !!emailDomain && allowedDomains.includes(emailDomain);
     const emailError = formData.email && !isCollegeEmail
         ? 'Please use your college email (e.g., name@college.edu)'
+        : '';
+    const nameError = formData.name && !validateName(formData.name)
+        ? 'Name must contain only letters'
+        : '';
+    const passwordError = formData.password && !validatePassword(formData.password)
+        ? 'Password must be at least 8 characters and include uppercase, lowercase, number, and special character'
         : '';
 
     useEffect(() => {
@@ -45,20 +52,37 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!isCollegeEmail) {
-            setError('Please use your college email (e.g., name@college.edu)');
-            return;
+        const errors = [];
+        if (!formData.name || !formData.name.trim()) {
+            errors.push('Name is required');
+        } else if (!validateName(formData.name)) {
+            errors.push('Name must contain only letters');
+        }
+        if (!formData.email || !formData.email.trim()) {
+            errors.push('Email is required');
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            errors.push('Valid email required');
+        }
+        if (formData.email && !isCollegeEmail) {
+            errors.push('Please use your college email (e.g., name@college.edu)');
         }
         if (isFallback && !collegeConfirmed) {
-            setError('Please confirm your detected college name');
-            return;
+            errors.push('Please confirm your detected college name');
         }
         if (isFallback && !collegeName.trim()) {
-            setError('Please provide a valid college name');
+            errors.push('Please provide a valid college name');
+        }
+        if (!formData.password) {
+            errors.push('Password is required');
+        } else if (!validatePassword(formData.password)) {
+            errors.push('Weak password');
+        }
+        if (errors.length > 0) {
+            setErrorMessages(errors);
             return;
         }
         setLoading(true);
-        setError('');
+        setErrorMessages([]);
         try {
             await register({
                 ...formData,
@@ -67,7 +91,12 @@ const Register = () => {
             });
             navigate('/verify-email', { state: { email: formData.email } });
         } catch (err) {
-            setError(err.response?.data?.message || 'Registration failed');
+            const apiErrors = err.response?.data?.errors;
+            if (Array.isArray(apiErrors) && apiErrors.length > 0) {
+                setErrorMessages(apiErrors.map((entry) => entry.msg));
+            } else {
+                setErrorMessages([err.response?.data?.message || 'Registration failed']);
+            }
         } finally {
             setLoading(false);
         }
@@ -79,9 +108,15 @@ const Register = () => {
                 <h1 className="gradient-text" style={{ fontSize: '2rem', marginBottom: '10px', textAlign: 'center' }}>Join Campus Bazaar</h1>
                 <p style={{ color: 'var(--text-dim)', textAlign: 'center', marginBottom: '30px' }}>Create an account to start trading</p>
                 
-                {error && <div style={{ color: 'var(--accent)', marginBottom: '20px', textAlign: 'center' }}>{error}</div>}
+                {errorMessages.length > 0 && (
+                    <div style={{ color: 'var(--accent)', marginBottom: '20px', textAlign: 'center' }}>
+                        {errorMessages.map((msg, index) => (
+                            <p key={index} style={{ marginBottom: '6px' }}>{msg}</p>
+                        ))}
+                    </div>
+                )}
                 
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} noValidate>
                     <div style={{ marginBottom: '20px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', background: 'rgba(0,0,0,0.2)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border)' }}>
                             <User size={18} style={{ color: 'var(--text-dim)', marginRight: '10px' }} />
@@ -89,11 +124,15 @@ const Register = () => {
                                 type="text" 
                                 placeholder="Full Name" 
                                 value={formData.name} 
-                                onChange={(e) => setFormData({...formData, name: e.target.value})}
+                                onChange={(e) => {
+                                    const value = e.target.value.replace(/[^A-Za-z\s]/g, '');
+                                    setFormData({ ...formData, name: value });
+                                }}
                                 style={{ background: 'none', border: 'none', color: 'white', width: '100%', outline: 'none' }}
                                 required
                             />
                         </div>
+                        {nameError && <div style={{ color: 'var(--accent)', marginTop: '8px', fontSize: '0.9rem' }}>{nameError}</div>}
                     </div>
                     <div style={{ marginBottom: '20px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', background: 'rgba(0,0,0,0.2)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border)' }}>
@@ -159,10 +198,11 @@ const Register = () => {
                                 required
                             />
                         </div>
+                        {passwordError && <div style={{ color: 'var(--accent)', marginTop: '8px', fontSize: '0.9rem' }}>{passwordError}</div>}
                     </div>
                     <button 
                         type="submit" 
-                        disabled={loading || !isCollegeEmail || (isFallback && (!collegeConfirmed || !collegeName.trim()))}
+                        disabled={loading || !isCollegeEmail || !validateName(formData.name) || !validatePassword(formData.password) || (isFallback && (!collegeConfirmed || !collegeName.trim()))}
                         style={{ width: '100%', padding: '14px', background: 'var(--primary)', color: 'white', fontSize: '1rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                     >
                         {loading ? <Loader2 className="animate-spin" /> : 'Create Account'}

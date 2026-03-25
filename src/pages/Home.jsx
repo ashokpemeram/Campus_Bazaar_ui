@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import toast from 'react-hot-toast';
+import { formatCurrency } from '../utils/currency';
 
 const Home = () => {
     const [wishlist, setWishlist] = useState([]);
@@ -165,7 +166,7 @@ const Home = () => {
                                     <h3 style={{ fontSize: '1.1rem', marginBottom: '8px' }}>{product.title}</h3>
                                 </Link>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <span style={{ fontSize: '1.3rem', fontWeight: '700', color: 'var(--primary)' }}>${product.price}</span>
+                                    <span style={{ fontSize: '1.3rem', fontWeight: '700', color: 'var(--primary)' }}>{formatCurrency(product.price)}</span>
                                     <button 
                                         className="btn-primary" 
                                         style={{ padding: '8px 15px', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '8px' }}

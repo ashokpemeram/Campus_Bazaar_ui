@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../../components/AdminLayout';
 import axios from 'axios';
 import { CheckCircle, XCircle, Trash2, ExternalLink } from 'lucide-react';
+import { formatCurrency } from '../../utils/currency';
 
 const Products = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     const fetchProducts = async () => {
         try {
@@ -31,6 +34,20 @@ const Products = () => {
         }
     };
 
+    const handleViewDetails = (productId) => {
+        navigate(`/admin/product/${productId}`);
+    };
+
+    const handleDelete = async (id) => {
+        if (!confirm('Delete this product? This cannot be undone.')) return;
+        try {
+            await axios.delete(`/api/admin/products/${id}`);
+            fetchProducts();
+        } catch (err) {
+            alert('Failed to delete product');
+        }
+    };
+
     const statusColors = {
         pending: '#f59e0b',
         approved: '#10b981',
@@ -53,7 +70,7 @@ const Products = () => {
                         <div style={{ padding: '20px' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
                                 <h3 style={{ fontSize: '1.1rem' }}>{product.title}</h3>
-                                <span style={{ color: 'var(--primary)', fontWeight: '700' }}>${product.price}</span>
+                                <span style={{ color: 'var(--primary)', fontWeight: '700' }}>{formatCurrency(product.price)}</span>
                             </div>
                             <p style={{ fontSize: '0.85rem', color: 'var(--text-dim)', marginBottom: '15px', height: '36px', overflow: 'hidden' }}>{product.description}</p>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px', fontSize: '0.8rem', color: 'var(--text-dim)' }}>
@@ -72,11 +89,18 @@ const Products = () => {
                                         </button>
                                     </>
                                 )}
-                                {product.status !== 'pending' && (
-                                    <button style={{ flex: 1, background: 'rgba(255,255,255,0.05)', color: 'white', padding: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
-                                        <ExternalLink size={16} /> View Details
-                                    </button>
-                                )}
+                                <button
+                                    onClick={() => handleViewDetails(product._id)}
+                                    style={{ flex: 1, background: 'rgba(255,255,255,0.05)', color: 'white', padding: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}
+                                >
+                                    <ExternalLink size={16} /> View Details
+                                </button>
+                                <button
+                                    onClick={() => handleDelete(product._id)}
+                                    style={{ background: 'rgba(244, 63, 94, 0.1)', color: '#f43f5e', padding: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}
+                                >
+                                    <Trash2 size={16} /> Delete
+                                </button>
                             </div>
                         </div>
                     </div>

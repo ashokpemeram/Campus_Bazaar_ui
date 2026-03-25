@@ -24,6 +24,12 @@ body {
   overflow-x: hidden;
 }
 
+select,
+option {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+}
+
 /* Glassmorphism Utility */
 .glass {
   background: var(--glass);

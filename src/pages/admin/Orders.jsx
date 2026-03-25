@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import AdminLayout from '../../components/AdminLayout';
 import axios from 'axios';
+import { formatCurrency } from '../../utils/currency';
 
 const Orders = () => {
     const [orders, setOrders] = useState([]);
@@ -47,7 +48,7 @@ const Orders = () => {
                                 <td style={{ padding: '15px 20px', fontSize: '0.85rem' }}>#{order._id.slice(-6).toUpperCase()}</td>
                                 <td style={{ padding: '15px 20px' }}>{order.buyerId?.name}</td>
                                 <td style={{ padding: '15px 20px' }}>{order.products.length} Items</td>
-                                <td style={{ padding: '15px 20px', fontWeight: '700' }}>${order.totalAmount}</td>
+                                <td style={{ padding: '15px 20px', fontWeight: '700' }}>{formatCurrency(order.totalAmount)}</td>
                                 <td style={{ padding: '15px 20px' }}>
                                     <span style={{ fontSize: '0.8rem', padding: '6px 12px', background: 'rgba(255,255,255,0.05)', borderRadius: '30px' }}>
                                         {order.status.toUpperCase()}

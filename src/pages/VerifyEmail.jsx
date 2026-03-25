@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Loader2 } from 'lucide-react';
 import { allowedDomains } from '../config/collegeDomains';
 
@@ -13,6 +13,7 @@ const VerifyEmail = () => {
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
     const { verifyOtp, resendOtp } = useAuth();
+    const navigate = useNavigate();
 
     const getEmailDomain = (value) => {
         const parts = (value || '').toLowerCase().trim().split('@');
@@ -30,6 +31,10 @@ const VerifyEmail = () => {
         setError('');
         setMessage('');
 
+        if (!email || !email.trim()) {
+            setError('Email is required');
+            return;
+        }
         if (!isCollegeEmail) {
             setError('Please use your college email (e.g., name@college.edu)');
             return;
@@ -42,7 +47,11 @@ const VerifyEmail = () => {
         setLoading(true);
         try {
             const res = await verifyOtp(email, otp);
-            setMessage(res.message || 'Email verified. You can now log in.');
+            if (res.status === 200) {
+                setMessage(res.data?.message || 'OTP verified successfully');
+                alert('OTP verified');
+                navigate('/login');
+            }
             setOtp('');
         } catch (err) {
             setError(err.response?.data?.message || 'Verification failed');
@@ -78,7 +87,7 @@ const VerifyEmail = () => {
                 {error && <div style={{ color: 'var(--accent)', marginBottom: '20px', textAlign: 'center' }}>{error}</div>}
                 {message && <div style={{ color: 'var(--primary)', marginBottom: '20px', textAlign: 'center' }}>{message}</div>}
 
-                <form onSubmit={handleVerify}>
+                <form onSubmit={handleVerify} noValidate>
                     <div style={{ marginBottom: '20px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', background: 'rgba(0,0,0,0.2)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border)' }}>
                             <Mail size={18} style={{ color: 'var(--text-dim)', marginRight: '10px' }} />

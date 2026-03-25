@@ -32,6 +32,16 @@ const Users = () => {
         }
     };
 
+    const unblockUser = async (id) => {
+        if (!confirm('Unblock this user?')) return;
+        try {
+            await axios.put(`/api/admin/users/${id}/unblock`);
+            fetchUsers();
+        } catch (err) {
+            alert('Failed to unblock user');
+        }
+    };
+
     const deleteUser = async (id) => {
         if (!confirm('Are you sure you want to delete this user? This action is permanent!')) return;
         try {
@@ -93,6 +103,11 @@ const Users = () => {
                                         {!user.isBlocked && user.role !== 'admin' && (
                                             <button onClick={() => blockUser(user._id)} style={{ background: 'rgba(244, 63, 94, 0.1)', color: '#f43f5e', padding: '6px' }} title="Block User">
                                                 <UserMinus size={16} />
+                                            </button>
+                                        )}
+                                        {user.isBlocked && (
+                                            <button onClick={() => unblockUser(user._id)} style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '6px' }} title="Unblock User">
+                                                <ShieldCheck size={16} />
                                             </button>
                                         )}
                                         <button onClick={() => deleteUser(user._id)} style={{ background: 'rgba(255, 255, 255, 0.05)', color: 'var(--text-dim)', padding: '6px' }} title="Delete User">

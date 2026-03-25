@@ -7,15 +7,32 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
+    const [errorMessages, setErrorMessages] = useState([]);
+    const [serverError, setServerError] = useState('');
     const [needsVerify, setNeedsVerify] = useState(false);
     const { login } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const errors = [];
+        if (!email || !email.trim()) {
+            errors.push('Email is required');
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            errors.push('Valid email required');
+        }
+        if (!password) {
+            errors.push('Password is required');
+        }
+        if (errors.length > 0) {
+            setErrorMessages(errors);
+            setServerError('');
+            setNeedsVerify(false);
+            return;
+        }
         setLoading(true);
-        setError('');
+        setErrorMessages([]);
+        setServerError('');
         setNeedsVerify(false);
         try {
             const data = await login(email, password);
@@ -23,7 +40,7 @@ const Login = () => {
             else navigate('/');
         } catch (err) {
             const message = err.response?.data?.message || 'Login failed';
-            setError(message);
+            setServerError(message);
             if (err.response?.status === 403 && message.toLowerCase().includes('verify')) {
                 setNeedsVerify(true);
             }
@@ -38,9 +55,16 @@ const Login = () => {
                 <h1 className="gradient-text" style={{ fontSize: '2rem', marginBottom: '10px', textAlign: 'center' }}>Welcome Back</h1>
                 <p style={{ color: 'var(--text-dim)', textAlign: 'center', marginBottom: '30px' }}>Sign in to continue to Campus Bazaar</p>
                 
-                {error && (
+                {errorMessages.length > 0 && (
                     <div style={{ color: 'var(--accent)', marginBottom: '20px', textAlign: 'center' }}>
-                        {error}
+                        {errorMessages.map((msg, index) => (
+                            <p key={index} style={{ marginBottom: '6px' }}>{msg}</p>
+                        ))}
+                    </div>
+                )}
+                {serverError && (
+                    <div style={{ color: 'var(--accent)', marginBottom: '20px', textAlign: 'center' }}>
+                        {serverError}
                         {needsVerify && (
                             <div style={{ marginTop: '8px' }}>
                                 <Link to="/verify-email" style={{ color: 'var(--primary)', textDecoration: 'none' }}>
@@ -51,7 +75,7 @@ const Login = () => {
                     </div>
                 )}
                 
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} noValidate>
                     <div style={{ marginBottom: '20px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', background: 'rgba(0,0,0,0.2)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border)' }}>
                             <Mail size={18} style={{ color: 'var(--text-dim)', marginRight: '10px' }} />

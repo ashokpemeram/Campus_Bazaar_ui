@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import toast from 'react-hot-toast';
 import Skeleton from '../components/Skeleton';
+import { formatCurrency } from '../utils/currency';
 
 const Cart = () => {
     const [cart, setCart] = useState(null);
@@ -99,7 +100,7 @@ const Cart = () => {
                                     <div style={{ flex: 1 }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
                                             <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{item.productId?.title}</h3>
-                                            <span style={{ fontWeight: 'bold', color: 'var(--primary)', fontSize: '1.1rem' }}>${item.productId?.price}</span>
+                                            <span style={{ fontWeight: 'bold', color: 'var(--primary)', fontSize: '1.1rem' }}>{formatCurrency(item.productId?.price)}</span>
                                         </div>
                                         <p style={{ color: 'var(--text-dim)', fontSize: '0.9rem', marginBottom: '15px' }}>Category: {item.productId?.category}</p>
                                         
@@ -131,15 +132,15 @@ const Cart = () => {
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginBottom: '25px' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-dim)' }}>
                                     <span>Subtotal</span>
-                                    <span>${subtotal.toFixed(2)}</span>
+                                    <span>{formatCurrency(subtotal)}</span>
                                 </div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-dim)' }}>
                                     <span>Campus Delivery</span>
-                                    <span>${shipping.toFixed(2)}</span>
+                                    <span>{formatCurrency(shipping)}</span>
                                 </div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold', fontSize: '1.3rem', marginTop: '10px', color: 'white' }}>
                                     <span>Total</span>
-                                    <span style={{ color: 'var(--primary)' }}>${total.toFixed(2)}</span>
+                                    <span style={{ color: 'var(--primary)' }}>{formatCurrency(total)}</span>
                                 </div>
                             </div>
                             

@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import AdminLayout from '../../components/AdminLayout';
 import axios from 'axios';
-import { Users, Package, ShoppingCart, DollarSign, TrendingUp } from 'lucide-react';
+import { Users, Package, ShoppingCart, IndianRupee, TrendingUp } from 'lucide-react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js';
 import { Doughnut, Line } from 'react-chartjs-2';
+import { formatCurrency } from '../../utils/currency';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement);
 
@@ -37,7 +38,7 @@ const Dashboard = () => {
     const lineData = {
         labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
         datasets: [{
-            label: 'Sales ($)',
+            label: 'Sales (₹)',
             data: [120, 190, 300, 250, 400, 350, 500],
             borderColor: '#6366f1',
             tension: 0.4,
@@ -53,7 +54,7 @@ const Dashboard = () => {
                     { label: 'Total Users', value: stats.totalUsers, icon: Users, color: '#6366f1' },
                     { label: 'Live Products', value: stats.totalProducts, icon: Package, color: '#10b981' },
                     { label: 'Total Orders', value: stats.totalOrders, icon: ShoppingCart, color: '#f59e0b' },
-                    { label: 'Revenue (Mock)', value: '$12,450', icon: DollarSign, color: '#f43f5e' }
+                    { label: 'Revenue (Mock)', value: formatCurrency(12450), icon: IndianRupee, color: '#f43f5e' }
                 ].map((stat, idx) => (
                     <div key={idx} className="card" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
                         <div style={{ width: '56px', height: '56px', background: `${stat.color}20`, borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

@@ -5,6 +5,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
+import { formatCurrency } from '../utils/currency';
 
 const Checkout = () => {
     const { user } = useAuth();
@@ -184,7 +185,7 @@ const Checkout = () => {
                                             <div style={{ fontSize: '0.9rem', fontWeight: 'bold', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '180px' }}>{item.productId?.title}</div>
                                             <div style={{ fontSize: '0.8rem', color: 'var(--text-dim)' }}>Qty: {item.quantity}</div>
                                         </div>
-                                        <div style={{ fontWeight: 'bold' }}>${(item.productId?.price * item.quantity).toFixed(2)}</div>
+                                        <div style={{ fontWeight: 'bold' }}>{formatCurrency(item.productId?.price * item.quantity)}</div>
                                     </div>
                                 ))}
                             </div>
@@ -192,15 +193,15 @@ const Checkout = () => {
                             <div style={{ paddingTop: '20px', borderTop: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-dim)' }}>
                                     <span>Subtotal</span>
-                                    <span>${subtotal.toFixed(2)}</span>
+                                    <span>{formatCurrency(subtotal)}</span>
                                 </div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-dim)' }}>
                                     <span>Delivery</span>
-                                    <span>${shipping.toFixed(2)}</span>
+                                    <span>{formatCurrency(shipping)}</span>
                                 </div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold', fontSize: '1.2rem', marginTop: '10px' }}>
                                     <span>Total</span>
-                                    <span style={{ color: 'var(--primary)' }}>${total.toFixed(2)}</span>
+                                    <span style={{ color: 'var(--primary)' }}>{formatCurrency(total)}</span>
                                 </div>
                             </div>
 

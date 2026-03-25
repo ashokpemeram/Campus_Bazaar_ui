@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Skeleton from '../../components/Skeleton';
+import { formatCurrency } from '../../utils/currency';
 
 const MyOrders = () => {
     const [orders, setOrders] = useState([]);
@@ -60,7 +61,7 @@ const MyOrders = () => {
                                     <div style={{ fontSize: '0.9rem' }}>{new Date(order.createdAt).toLocaleDateString()}</div>
                                 </div>
                                 <div style={{ textAlign: 'right' }}>
-                                    <div style={{ fontWeight: 'bold', color: 'var(--primary)' }}>${order.totalAmount}</div>
+                                    <div style={{ fontWeight: 'bold', color: 'var(--primary)' }}>{formatCurrency(order.totalAmount)}</div>
                                     <div style={{ fontSize: '0.8rem', color: statusColor }}>{statusLabel}</div>
                                 </div>
                             </div>
