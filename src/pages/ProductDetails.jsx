@@ -12,6 +12,7 @@ const ProductDetails = () => {
     const navigate = useNavigate();
     const { user } = useAuth();
     const [product, setProduct] = useState(null);
+    const [activeImageIndex, setActiveImageIndex] = useState(0);
     const [similarProducts, setSimilarProducts] = useState([]);
     const [wishlist, setWishlist] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -56,6 +57,7 @@ const ProductDetails = () => {
     useEffect(() => {
         fetchProduct();
         fetchSimilar();
+        setActiveImageIndex(0);
     }, [id]);
 
     useEffect(() => {
@@ -138,6 +140,10 @@ const ProductDetails = () => {
         );
     }
 
+    const hasImages = product.images?.length > 0;
+    const safeIndex = Math.min(activeImageIndex, (product.images?.length || 1) - 1);
+    const activeImage = hasImages ? product.images[safeIndex] : null;
+
     return (
         <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
             <Navbar />
@@ -147,11 +153,38 @@ const ProductDetails = () => {
                 </Link>
 
                 <div className="card" style={{ display: 'grid', gridTemplateColumns: 'minmax(260px, 420px) 1fr', gap: '30px' }}>
-                    <div style={{ borderRadius: '16px', overflow: 'hidden', background: 'rgba(0,0,0,0.3)', minHeight: '320px' }}>
-                        {product.images?.[0] ? (
-                            <img src={`${import.meta.env.VITE_SERVER_URL}/uploads/${product.images[0]}`} alt={product.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                        ) : (
-                            <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-dim)' }}>No Image</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        <div style={{ borderRadius: '16px', overflow: 'hidden', background: 'rgba(0,0,0,0.3)', minHeight: '320px' }}>
+                            {activeImage ? (
+                                <img src={`${import.meta.env.VITE_SERVER_URL}/uploads/${activeImage}`} alt={product.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            ) : (
+                                <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-dim)' }}>No Image</div>
+                            )}
+                        </div>
+                        {hasImages && (
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))', gap: '10px' }}>
+                                {product.images.map((img, index) => (
+                                    <button
+                                        key={`${img}-${index}`}
+                                        type="button"
+                                        onClick={() => setActiveImageIndex(index)}
+                                        style={{
+                                            borderRadius: '10px',
+                                            overflow: 'hidden',
+                                            padding: 0,
+                                            border: index === safeIndex ? '2px solid var(--primary)' : '1px solid var(--border)',
+                                            background: 'rgba(0,0,0,0.2)',
+                                            cursor: 'pointer'
+                                        }}
+                                    >
+                                        <img
+                                            src={`${import.meta.env.VITE_SERVER_URL}/uploads/${img}`}
+                                            alt={`${product.title} ${index + 1}`}
+                                            style={{ width: '100%', height: '80px', objectFit: 'cover', display: 'block' }}
+                                        />
+                                    </button>
+                                ))}
+                            </div>
                         )}
                     </div>
 
