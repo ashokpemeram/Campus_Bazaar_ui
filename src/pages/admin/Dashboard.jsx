@@ -9,7 +9,16 @@ import { formatCurrency } from '../../utils/currency';
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement);
 
 const Dashboard = () => {
-    const [stats, setStats] = useState({ totalUsers: 0, totalProducts: 0, totalOrders: 0 });
+    const [stats, setStats] = useState({
+        totalUsers: 0,
+        totalProducts: 0,
+        totalOrders: 0,
+        revenue: 0,
+        activeUsers: 0,
+        blockedUsers: 0,
+        salesByDay: { labels: [], data: [] },
+        growthPercent: 0
+    });
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -27,25 +36,35 @@ const Dashboard = () => {
     }, []);
 
     const chartData = {
-        labels: ['Active Users', 'New Users'],
+        labels: ['Active Users', 'Blocked Users'],
         datasets: [{
-            data: [stats.totalUsers * 0.7, stats.totalUsers * 0.3],
+            data: [stats.activeUsers, stats.blockedUsers],
             backgroundColor: ['#6366f1', '#f43f5e'],
             borderWidth: 0
         }]
     };
 
+    const fallbackLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const salesLabels = stats.salesByDay?.labels?.length ? stats.salesByDay.labels : fallbackLabels;
+    const salesData = stats.salesByDay?.data?.length
+        ? stats.salesByDay.data
+        : new Array(salesLabels.length).fill(0);
+
     const lineData = {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        labels: salesLabels,
         datasets: [{
-            label: 'Sales (₹)',
-            data: [120, 190, 300, 250, 400, 350, 500],
+            label: 'Sales (INR)',
+            data: salesData,
             borderColor: '#6366f1',
             tension: 0.4,
             fill: true,
             backgroundColor: 'rgba(99, 102, 241, 0.1)'
         }]
     };
+
+    const growthValue = Number.isFinite(stats.growthPercent) ? stats.growthPercent : 0;
+    const growthIsPositive = growthValue >= 0;
+    const growthLabel = `${growthIsPositive ? '+' : ''}${growthValue}% this week`;
 
     return (
         <AdminLayout title="System Overview">
@@ -54,7 +73,7 @@ const Dashboard = () => {
                     { label: 'Total Users', value: stats.totalUsers, icon: Users, color: '#6366f1' },
                     { label: 'Live Products', value: stats.totalProducts, icon: Package, color: '#10b981' },
                     { label: 'Total Orders', value: stats.totalOrders, icon: ShoppingCart, color: '#f59e0b' },
-                    { label: 'Revenue (Mock)', value: formatCurrency(12450), icon: IndianRupee, color: '#f43f5e' }
+                    { label: 'Revenue', value: formatCurrency(stats.revenue), icon: IndianRupee, color: '#f43f5e' }
                 ].map((stat, idx) => (
                     <div key={idx} className="card" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
                         <div style={{ width: '56px', height: '56px', background: `${stat.color}20`, borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -72,8 +91,8 @@ const Dashboard = () => {
                 <div className="card glass">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
                         <h3 style={{ fontSize: '1.2rem' }}>Growth Analytics</h3>
-                        <div style={{ color: '#10b981', display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.9rem' }}>
-                            <TrendingUp size={16} /> +12% this week
+                        <div style={{ color: growthIsPositive ? '#10b981' : '#ef4444', display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.9rem' }}>
+                            <TrendingUp size={16} /> {growthLabel}
                         </div>
                     </div>
                     <div style={{ height: '300px' }}>
