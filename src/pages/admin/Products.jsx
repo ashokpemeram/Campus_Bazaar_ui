@@ -4,6 +4,7 @@ import AdminLayout from '../../components/AdminLayout';
 import axios from 'axios';
 import { CheckCircle, XCircle, Trash2, ExternalLink } from 'lucide-react';
 import { formatCurrency } from '../../utils/currency';
+import { buildMediaUrl } from '../../utils/mediaUrl';
 
 const Products = () => {
     const [products, setProducts] = useState([]);
@@ -62,7 +63,7 @@ const Products = () => {
                 {products.map(product => (
                     <div key={product._id} className="card glass animate-fade" style={{ padding: '0', overflow: 'hidden' }}>
                         <div style={{ position: 'relative', height: '180px', background: 'rgba(0,0,0,0.3)' }}>
-                            {product.images?.[0] ? <img src={`${import.meta.env.VITE_SERVER_URL}/uploads/${product.images[0]}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-dim)' }}>No Image</div>}
+                            {product.images?.[0] ? <img src={buildMediaUrl(product.images[0])} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-dim)' }}>No Image</div>}
                             <div style={{ position: 'absolute', top: '15px', right: '15px', padding: '6px 12px', background: `${statusColors[product.status]}20`, color: statusColors[product.status], borderRadius: '30px', fontSize: '0.75rem', fontWeight: 'bold', border: `1px solid ${statusColors[product.status]}50` }}>
                                 {product.status.toUpperCase()}
                             </div>

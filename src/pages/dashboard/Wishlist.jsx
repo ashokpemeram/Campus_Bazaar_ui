@@ -4,6 +4,7 @@ import { Trash2, ShoppingCart } from 'lucide-react';
 import Skeleton from '../../components/Skeleton';
 import { Link } from 'react-router-dom';
 import { formatCurrency } from '../../utils/currency';
+import { buildMediaUrl } from '../../utils/mediaUrl';
 
 const Wishlist = () => {
     const [wishlist, setWishlist] = useState([]);
@@ -51,7 +52,7 @@ const Wishlist = () => {
                     {wishlist.map(item => (
                         <div key={item._id} className="card" style={{ padding: '15px' }}>
                             <div style={{ height: '140px', background: 'rgba(0,0,0,0.2)', borderRadius: '10px', marginBottom: '12px', overflow: 'hidden', position: 'relative' }}>
-                                {item.productId?.images?.[0] ? <img src={`${import.meta.env.VITE_SERVER_URL}/uploads/${item.productId.images[0]}`} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : null}
+                                {item.productId?.images?.[0] ? <img src={buildMediaUrl(item.productId.images[0])} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : null}
                                 <button 
                                     onClick={() => handleRemove(item._id)}
                                     style={{ position: 'absolute', top: '8px', right: '8px', background: 'rgba(239, 68, 68, 0.8)', color: 'white', padding: '6px', borderRadius: '50%' }}

@@ -207,6 +207,21 @@ const AddProduct = () => {
                                         {suggestion.breakdown && (
                                             <div style={{ color: 'var(--text-dim)', fontSize: '0.9rem', marginTop: '8px' }}>
                                                 <div style={{ fontWeight: '600', marginBottom: '4px' }}>Based on</div>
+                                                {suggestion.breakdown.modelPrice ? (
+                                                    <div>Model estimate: {formatCurrency(suggestion.breakdown.modelPrice)}</div>
+                                                ) : null}
+                                                {suggestion.breakdown.modelSource ? (
+                                                    <div>
+                                                        Estimate source:{' '}
+                                                        {suggestion.breakdown.modelSource === 'ml'
+                                                            ? 'Regression model'
+                                                            : suggestion.breakdown.modelSource === 'openai'
+                                                                ? 'OpenAI'
+                                                                : suggestion.breakdown.modelSource === 'fallback'
+                                                                    ? 'Heuristic'
+                                                                    : suggestion.breakdown.modelSource}
+                                                    </div>
+                                                ) : null}
                                                 {suggestion.breakdown.depreciatedPrice ? (
                                                     <div>Condition adjusted price: {formatCurrency(suggestion.breakdown.depreciatedPrice)}</div>
                                                 ) : null}

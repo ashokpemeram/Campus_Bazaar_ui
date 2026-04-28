@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { User, Camera, Save, Lock } from 'lucide-react';
 import { validateName, validatePassword } from '../../utils/validation';
+import { buildMediaUrl } from '../../utils/mediaUrl';
 
 const Settings = () => {
     const { user, updateUser } = useAuth();
@@ -11,7 +12,7 @@ const Settings = () => {
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [avatar, setAvatar] = useState(null);
-    const [preview, setPreview] = useState(user?.avatar ? `${import.meta.env.VITE_SERVER_URL}/uploads/${user.avatar}` : null);
+    const [preview, setPreview] = useState(user?.avatar ? buildMediaUrl(user.avatar) : null);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState({ type: '', text: '' });
     const [passwordLoading, setPasswordLoading] = useState(false);

@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { buildMediaUrl } from '../utils/mediaUrl';
 
 const Navbar = () => {
     const { user, logout } = useAuth();
@@ -72,7 +73,7 @@ const Navbar = () => {
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '5px 12px', background: 'rgba(255,255,255,0.05)', borderRadius: '20px' }}>
                             <div style={{ width: '28px', height: '28px', borderRadius: '50%', overflow: 'hidden', background: 'rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 {user.avatar ? (
-                                    <img src={`${import.meta.env.VITE_SERVER_URL}/uploads/${user.avatar}`} alt={user.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    <img src={buildMediaUrl(user.avatar)} alt={user.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                 ) : (
                                     <UserIcon size={16} />
                                 )}

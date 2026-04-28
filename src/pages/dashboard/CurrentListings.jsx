@@ -4,6 +4,7 @@ import { ShoppingCart } from 'lucide-react';
 import Skeleton from '../../components/Skeleton';
 import { Link } from 'react-router-dom';
 import { formatCurrency } from '../../utils/currency';
+import { buildMediaUrl } from '../../utils/mediaUrl';
 
 const CurrentListings = () => {
     const [listings, setListings] = useState([]);
@@ -41,7 +42,7 @@ const CurrentListings = () => {
                     {listings.map(product => (
                         <div key={product._id} className="card" style={{ padding: '15px' }}>
                             <div style={{ height: '140px', background: 'rgba(0,0,0,0.2)', borderRadius: '10px', marginBottom: '12px', overflow: 'hidden' }}>
-                                {product.images?.[0] ? <img src={`${import.meta.env.VITE_SERVER_URL}/uploads/${product.images[0]}`} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : null}
+                                {product.images?.[0] ? <img src={buildMediaUrl(product.images[0])} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : null}
                             </div>
                             <h4 style={{ fontSize: '1rem', marginBottom: '5px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{product.title}</h4>
                             <div style={{ color: 'var(--primary)', fontWeight: 'bold', marginBottom: '10px' }}>{formatCurrency(product.price)}</div>

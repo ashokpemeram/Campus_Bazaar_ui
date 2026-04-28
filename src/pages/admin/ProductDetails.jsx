@@ -4,6 +4,7 @@ import AdminLayout from '../../components/AdminLayout';
 import axios from 'axios';
 import { ArrowLeft } from 'lucide-react';
 import { formatCurrency } from '../../utils/currency';
+import { buildMediaUrl } from '../../utils/mediaUrl';
 
 const AdminProductDetails = () => {
     const { id } = useParams();
@@ -52,7 +53,7 @@ const AdminProductDetails = () => {
                                     {product.images.map((img) => (
                                         <img
                                             key={img}
-                                            src={`${import.meta.env.VITE_SERVER_URL}/uploads/${img}`}
+                                            src={buildMediaUrl(img)}
                                             alt={product.title}
                                             style={{ width: '100%', height: '120px', objectFit: 'cover', borderRadius: '10px' }}
                                         />

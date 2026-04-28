@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Skeleton from '../../components/Skeleton';
 import { formatCurrency } from '../../utils/currency';
+import { buildMediaUrl } from '../../utils/mediaUrl';
 
 const MyOrders = () => {
     const [orders, setOrders] = useState([]);
@@ -69,7 +70,7 @@ const MyOrders = () => {
                                 {order.products.map((item, idx) => (
                                     <div key={idx} style={{ display: 'flex', gap: '15px', marginBottom: idx === order.products.length - 1 ? 0 : '10px' }}>
                                         <div style={{ width: '40px', height: '40px', borderRadius: '5px', background: 'rgba(255,255,255,0.05)', overflow: 'hidden' }}>
-                                            {item.productId?.images?.[0] ? <img src={`${import.meta.env.VITE_SERVER_URL}/uploads/${item.productId.images[0]}`} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : null}
+                                            {item.productId?.images?.[0] ? <img src={buildMediaUrl(item.productId.images[0])} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : null}
                                         </div>
                                         <div>
                                             <div style={{ fontSize: '0.95rem' }}>{item.productId?.title || 'Product Deleted'}</div>

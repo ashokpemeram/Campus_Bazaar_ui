@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import toast from 'react-hot-toast';
 import { formatCurrency } from '../utils/currency';
+import { buildMediaUrl } from '../utils/mediaUrl';
 
 const Home = () => {
     const [wishlist, setWishlist] = useState([]);
@@ -147,7 +148,7 @@ const Home = () => {
                                 <div style={{ height: '180px', background: 'rgba(0,0,0,0.3)', borderRadius: '12px', marginBottom: '15px', overflow: 'hidden', position: 'relative' }}>
                                     {product.images?.[0] ? (
                                         <Link to={`/products/${product._id}`} style={{ display: 'block', height: '100%' }}>
-                                            <img src={`${import.meta.env.VITE_SERVER_URL}/uploads/${product.images[0]}`} alt={product.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                            <img src={buildMediaUrl(product.images[0])} alt={product.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                         </Link>
                                     ) : (
                                         <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-dim)' }}>No Image</div>

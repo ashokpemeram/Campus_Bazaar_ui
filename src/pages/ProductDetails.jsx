@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 import { formatCurrency } from '../utils/currency';
+import { buildMediaUrl } from '../utils/mediaUrl';
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -156,7 +157,7 @@ const ProductDetails = () => {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                         <div style={{ borderRadius: '16px', overflow: 'hidden', background: 'rgba(0,0,0,0.3)', minHeight: '320px' }}>
                             {activeImage ? (
-                                <img src={`${import.meta.env.VITE_SERVER_URL}/uploads/${activeImage}`} alt={product.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                <img src={buildMediaUrl(activeImage)} alt={product.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                             ) : (
                                 <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-dim)' }}>No Image</div>
                             )}
@@ -178,7 +179,7 @@ const ProductDetails = () => {
                                         }}
                                     >
                                         <img
-                                            src={`${import.meta.env.VITE_SERVER_URL}/uploads/${img}`}
+                                            src={buildMediaUrl(img)}
                                             alt={`${product.title} ${index + 1}`}
                                             style={{ width: '100%', height: '80px', objectFit: 'cover', display: 'block' }}
                                         />
@@ -235,7 +236,7 @@ const ProductDetails = () => {
                                 <div style={{ height: '160px', background: 'rgba(0,0,0,0.3)', borderRadius: '12px', marginBottom: '12px', overflow: 'hidden', position: 'relative' }}>
                                     {item.images?.[0] ? (
                                         <Link to={`/products/${item._id}`} style={{ display: 'block', height: '100%' }}>
-                                            <img src={`${import.meta.env.VITE_SERVER_URL}/uploads/${item.images[0]}`} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                            <img src={buildMediaUrl(item.images[0])} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                         </Link>
                                     ) : (
                                         <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-dim)' }}>No Image</div>

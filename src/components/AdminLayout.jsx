@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, Package, ShoppingCart, LogOut, ChevronLeft } from 'lucide-react';
+import { LayoutDashboard, Users, Package, ShoppingCart, LogOut, ChevronLeft, MessageCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const AdminLayout = ({ children, title }) => {
@@ -11,7 +11,8 @@ const AdminLayout = ({ children, title }) => {
         { icon: LayoutDashboard, label: 'Dashboard', path: '/admin' },
         { icon: Users, label: 'Users', path: '/admin/users' },
         { icon: Package, label: 'Products', path: '/admin/products' },
-        { icon: ShoppingCart, label: 'Orders', path: '/admin/orders' }
+        { icon: ShoppingCart, label: 'Orders', path: '/admin/orders' },
+        { icon: MessageCircle, label: 'Chatbot', path: '/admin/chatbot' }
     ];
 
     return (

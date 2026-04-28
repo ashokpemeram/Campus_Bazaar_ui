@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import { formatCurrency } from '../utils/currency';
+import { buildMediaUrl } from '../utils/mediaUrl';
 
 const Checkout = () => {
     const { user } = useAuth();
@@ -180,7 +181,7 @@ const Checkout = () => {
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginBottom: '20px', maxHeight: '300px', overflowY: 'auto' }}>
                                 {cart.items.map(item => (
                                     <div key={item.productId?._id} style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-                                        <img src={`${import.meta.env.VITE_SERVER_URL}/uploads/${item.productId?.images?.[0]}`} alt="" style={{ width: '50px', height: '50px', borderRadius: '8px', objectFit: 'cover' }} />
+                                        <img src={buildMediaUrl(item.productId?.images?.[0])} alt="" style={{ width: '50px', height: '50px', borderRadius: '8px', objectFit: 'cover' }} />
                                         <div style={{ flex: 1 }}>
                                             <div style={{ fontSize: '0.9rem', fontWeight: 'bold', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '180px' }}>{item.productId?.title}</div>
                                             <div style={{ fontSize: '0.8rem', color: 'var(--text-dim)' }}>Qty: {item.quantity}</div>

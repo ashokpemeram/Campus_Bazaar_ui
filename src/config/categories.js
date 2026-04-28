@@ -3,5 +3,9 @@ export const CATEGORIES = [
     'Furniture',
     'Books',
     'Clothing',
-    'Tools'
+    'Tools',
+    'Sports & Fitness',
+    'Musical Instruments',
+    'Vehicles',
+    'Beauty & Personal Care'
 ];
